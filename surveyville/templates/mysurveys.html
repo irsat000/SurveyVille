@@ -1,0 +1,38 @@
+{% extends "template_1.html" %}
+{% load static %}
+
+{% block head %}
+<!--<link rel="stylesheet" href="{% static '/css/.css' %}">-->
+{% endblock head %}
+
+{% block content %}
+
+{% if surveys|length > 0%}
+<div class="long_text_layout long_text_col_2 gallery">
+    <ul class="survey_ul">
+        {% for survey in surveys %}
+        <li>
+            <div class="desc">
+                <h5>{{survey.s_title}}</h5>
+                <span class="expire_date">
+                    {% if today < survey.expire_date %}
+                    Kalan süre: {{ today|timesince:survey.expire_date }}
+                    {% else %}
+                    Süre doldu
+                    {% endif %}
+                </span>
+                <p>{{survey.s_text}}</p>
+                <p><b>{{survey.participations}} Katılımcı - {{survey.questioncount}} Soru</b></p>
+                <input type="button" value="Sonuçlar" class="anket-btn" onclick="location.href='{% url 'surveyresult' survey.id %}'">
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{%else%}
+<div class="ms-wraper">
+    <span>Anketiniz bulunmamaktadır<span>
+<div>
+{%endif%}
+
+{% endblock content %}
